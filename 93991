@@ -1,0 +1,309 @@
+#include "mbed.h"
+
+// Define bus output pins for the 7-segment display
+BusOut display(PTC6, PTC5, PTC16, PTA16, PTA17, PTC10, PTC11, PTC17);
+
+// Define a digital output pin for VDD
+DigitalOut vdd(PTC17);
+
+// Define digital input pins for each row of the keypad
+DigitalIn row1(PTE4);
+DigitalIn row2(PTE3);
+DigitalIn row3(PTE2);
+DigitalIn row4(PTB11);
+
+// Define digital output pins for each column of the keypad
+DigitalOut col1(PTB10);
+DigitalOut col2(PTB9);
+DigitalOut col3(PTB8);
+DigitalOut col4(PTB7);
+
+// Variables to store the values of the two input numbers, the operator, and the result of the calculation
+int In1 = 0;
+int In2 = 0;
+int Op = 0;
+int R = 0;
+
+// Function to set the value of VDD to 0
+void setVdd()
+{
+    vdd = 0;
+}
+
+// Functions to set the value of each column to 0, in order to scan through the keypad rows
+void setColumnsLow()
+{
+    col1 = 0;
+    col2 = 0;
+    col3 = 0;
+    col4 = 0;
+}
+
+// Functions to set the value of each column to 1, in order to scan through the keypad rows
+void setColumn1()
+{
+    col1 = 1;
+    col2 = 0;
+    col3 = 0;
+    col4 = 0;
+}
+
+void setColumn2()
+{
+    col1 = 0;
+    col2 = 1;
+    col3 = 0;
+    col4 = 0;
+}
+
+void setColumn3()
+{
+    col1 = 0;
+    col2 = 0;
+    col3 = 1;
+    col4 = 0;
+}
+
+void setColumn4()
+{
+    col1 = 0;
+    col2 = 0;
+    col3 = 0;
+    col4 = 1;
+}
+
+// Functions to set the value of the 7-segment display to show each digit
+void showDigit1()
+{
+    display = 0x06;
+}
+
+void showDigit2()
+{
+    display = 0x5B;
+}
+
+void showDigit3()
+{
+    display = 0x4F;
+}
+
+void showDigit4()
+{
+    display = 0x66;
+}
+
+void showDigit5()
+{
+    display = 0x6D;
+}
+
+void showDigit6()
+{
+    display = 0x7D;
+}
+
+void showDigit7()
+{
+    display = 0x07;
+}
+
+void showDigit8()
+{
+    display = 0x7F;
+}
+
+void showDigit9()
+{
+    display = 0x4F;
+}
+
+void showDigit0()
+{
+    display = 0x3F;
+}
+
+void showDigitA()
+{
+    display = 0x77;
+}
+
+void showDigitF()
+{
+    display = 0x71;
+}
+
+// Function to scan through the keypad rows and update the value of the first input number
+void scanKeypad1()
+{
+    setColumnsLow();
+    wait(0.2);
+    setColumn1();
+    wait(0.2);
+    if (row1 == 1) {
+        showDigit1();
+        In1 = 1;
+    }
+void KeyScan1()
+{
+	setColumnsLow();
+	wait(0.2);
+	setColumn1();
+	wait(0.2);
+	if ( row1 == 1 )
+		setColumnLow1();
+		V1 = 1;
+	if ( row2 == 1 )
+		setColumnLow4();
+		V1 = 4;
+	if ( row3 == 1 )
+		setColumnLow7();
+		V1 = 7;
+
+	wait(0.1);
+	setColumnLow2();
+	wait(0.2);
+	if ( row1 == 1 )
+		setColumnLow2();
+		V1 = 2;
+	if ( row2 == 1 )
+		setColumnLow5();
+		V1 = 5;
+	if ( row3 == 1 )
+		setColumnLow8();
+		V1 =  8;
+	if ( row4 == 1 )
+		setColumnLow0();
+		V1 = 0;
+
+	wait(0.1);
+	setColumnLow3();
+	wait(0.2);
+	if ( row1 == 1 )
+		setColumnLow3();
+		V1 = 3;
+	if ( row2 == 1 )
+		setColumnLow6();
+		V1 = 6;
+	if ( row3 == 1 )
+		setColumnLow9();
+		V1 = 9;
+}
+
+void KeyScan2()
+{
+	setColumnLow();
+	wait(0.2);
+	setColumnLow1();
+	wait(0.2);
+	if ( row1 == 1 )
+		setColumnLow1();
+		V2 = 1;
+	if ( row2 == 1 )
+		setColumnLow4();
+		V2 = 4;
+	if ( row3 == 1 )
+		setColumnLow7();
+		V2 = 7;
+
+	wait(0.1);
+	setColumnLow2();
+	wait(0.2);
+	if ( row1 == 1 )
+		setColumnLow2();
+		V2 = 2;
+	if ( row2 == 1 )
+		setColumnLow5();
+		V2 = 5;
+	if ( row3 == 1 )
+		setColumnLow8();
+		V2 = 8;
+	if ( row4 == 1 )
+		setColumnLow0();
+		V2 = 0;
+
+	wait(0.1);
+	setColumnLow3();
+	wait(0.2);
+	if ( row1 == 1 )
+		setColumnLow3();
+		V2 = 3;
+	if ( row2 == 1 )
+		setColumnLow6();
+		V2 = 6;
+	if ( row3 == 1 )
+		setColumnLow9();
+		V2 = 9;
+}
+
+void KeyScanOp()
+{
+	setColumnLow();
+	wait(0.1);
+	setColumnLow4();
+	wait(0.2);
+	if ( row1 == 1 )
+		showDigitA();
+		Op = 1;
+	if ( row2 == 1 )
+		showDigitB();
+		Op = 2;
+}
+
+int main()
+{
+	While (1)
+		{
+			SetVdd();
+
+			if ( In1 == 0 )
+			{
+				KeyScan1();
+				In1 = 1;
+			}
+
+			if ( In1 != 0 && InOp == 0 )
+			{
+				KeyScanOp();
+				InOp = 1;
+			}
+
+			if ( In1 != 0 && InOp != 0 && In2 == 0 )
+			{
+				KeyScan2();
+				In2 = 1;
+			}
+
+			if ( In1 != 0 && InOp != 0 && In2 != 0 )
+			{
+				if ( Op == 1 )
+				{
+					R = V1 + V2
+				}
+
+				if ( Op == 2 )
+				{
+					R = V1 - V2
+				}
+
+				if ( R > 9 )
+				{
+					ShowDigitF();
+				}
+
+				if ( R < 0 )
+				{
+					ShowDigitA();
+				}
+
+				wait(15)
+				R = 0;
+				V1 = 0;
+				V2 = 0;
+				In1 = 0;
+				In2 = 0;
+				InOp = 0;
+				Op = 0;
+			}
+		}
+}    \
